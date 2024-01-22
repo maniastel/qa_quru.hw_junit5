@@ -1,26 +1,20 @@
 package pages;
 
-import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.CollectionCondition;
+import pages.components.SearchBar;
 
-import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
 public class SearchResultPage {
 
-    private SelenideElement searchTermTitle = $(".a-color-state.a-text-bold");
+    SearchBar search = new SearchBar();
 
-    public SearchResultPage checkSearchTerm (String value) {
-        searchTermTitle.shouldHave(text(value));
-
-        return this;
-    }
-
-    public SearchResultPage checkNotEmptyResult (String value) {
-        $$("[data-component-type='s-search-result']").shouldHave(sizeGreaterThan(0));
-        $$("[data-component-type='s-search-result']").first().shouldHave(text(value));
-
+    public SearchResultPage checkSearchResult (String searchQuery) {
+        search.setSearchQuery(searchQuery);
+        $("h1").shouldHave(text(searchQuery));
+        $$("article").shouldHave(CollectionCondition.sizeGreaterThan(0));
         return this;
     }
 
